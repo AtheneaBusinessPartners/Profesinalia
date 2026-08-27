@@ -1,3 +1,5 @@
+import type { Trade } from "./job-fields";
+
 export type JobStatus =
   | "nueva"
   | "en_revision"
@@ -28,6 +30,7 @@ export interface Business {
   phone: string;
   email: string;
   zone: string;
+  trade: Trade;
   approved: boolean;
   created_at: string;
 }

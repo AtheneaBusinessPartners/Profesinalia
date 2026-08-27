@@ -3,7 +3,7 @@ import Link from "next/link";
 import { getCurrentBusinessOrRedirect } from "@/lib/get-business";
 import { createClient } from "@/lib/supabase/server";
 import { labelForKey } from "@/lib/job-data-labels";
-import { jobTypeLabel } from "@/components/JobListItem";
+import { jobTypeLabelFor } from "@/lib/job-fields";
 import StatusSelector from "@/components/StatusSelector";
 import FinancialsForm from "@/components/FinancialsForm";
 import type { Customer, Job, JobData, JobFinancials, JobPhoto } from "@/lib/types";
@@ -44,7 +44,9 @@ export default async function JobDetailPage({ params }: { params: { id: string }
         ← Trabajos
       </Link>
 
-      <h1 className="mt-2 text-xl font-bold">{typedJob.type ? jobTypeLabel(typedJob.type) : "Solicitud"}</h1>
+      <h1 className="mt-2 text-xl font-bold">
+        {typedJob.type ? jobTypeLabelFor(business.trade, typedJob.type) : "Solicitud"}
+      </h1>
 
       <div className="mt-4">
         <StatusSelector jobId={typedJob.id} currentStatus={typedJob.status} />

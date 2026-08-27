@@ -62,7 +62,13 @@ export default async function ClienteDetailPage({ params }: { params: { id: stri
       <h2 className="mb-3 mt-6 text-lg font-semibold">Historial de trabajos ({jobs.length})</h2>
       <div className="flex flex-col gap-3">
         {jobs.map((job) => (
-          <JobListItem key={job.id} job={job} customerName={typedCustomer.name} photoCount={job.job_photos?.length ?? 0} />
+          <JobListItem
+            key={job.id}
+            job={job}
+            customerName={typedCustomer.name}
+            trade={business.trade}
+            photoCount={job.job_photos?.length ?? 0}
+          />
         ))}
       </div>
     </div>

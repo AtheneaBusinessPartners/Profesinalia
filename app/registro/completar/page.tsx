@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { TRADE_LABELS, TRADE_DEFAULT_DESCRIPTIONS, type Trade } from "@/lib/job-fields";
 
 function slugify(text: string): string {
   return text
@@ -21,6 +22,7 @@ export default function CompletarPerfilPage() {
 
   const [checking, setChecking] = useState(true);
   const [businessName, setBusinessName] = useState("");
+  const [trade, setTrade] = useState<Trade>("aire_acondicionado");
   const [phone, setPhone] = useState("");
   const [zone, setZone] = useState("");
   const [loading, setLoading] = useState(false);
@@ -58,6 +60,8 @@ export default function CompletarPerfilPage() {
         phone,
         zone,
         email: data.user.email ?? "",
+        trade,
+        description: TRADE_DEFAULT_DESCRIPTIONS[trade],
       });
 
       if (!insertError) {
@@ -87,6 +91,17 @@ export default function CompletarPerfilPage() {
       <p className="mt-1 text-sm text-neutral-600">Solo nos faltan los datos de tu negocio.</p>
 
       <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
+        <div>
+          <label className="label">¿Cuál es tu oficio?</label>
+          <select className="input" value={trade} onChange={(e) => setTrade(e.target.value as Trade)}>
+            {Object.entries(TRADE_LABELS).map(([value, label]) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <div>
           <label className="label">Nombre del negocio</label>
           <input

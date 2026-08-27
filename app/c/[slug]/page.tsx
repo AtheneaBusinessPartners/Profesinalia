@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import JobRequestForm from "@/components/JobRequestForm";
+import type { Trade } from "@/lib/job-fields";
 
 export default async function PublicClientPage({ params }: { params: { slug: string } }) {
   const supabase = createClient();
@@ -27,7 +28,13 @@ export default async function PublicClientPage({ params }: { params: { slug: str
 
   return (
     <main className="mx-auto flex min-h-screen max-w-md flex-col bg-white">
-      <JobRequestForm slug={params.slug} businessName={business.name} businessDescription={business.description} businessZone={business.zone} />
+      <JobRequestForm
+        slug={params.slug}
+        businessName={business.name}
+        businessDescription={business.description}
+        businessZone={business.zone}
+        trade={business.trade as Trade}
+      />
     </main>
   );
 }

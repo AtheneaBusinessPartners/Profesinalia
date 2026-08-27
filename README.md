@@ -1,15 +1,17 @@
 # Profesionalia (MVP)
 
-Un profesional de aire acondicionado recibe un WhatsApp, manda un enlace, el cliente rellena un
-formulario guiado por desplegables (sin registrarse), y el trabajo aparece organizado en el panel
-del profesional, con precio, costes y margen.
+Un profesional de servicios para el hogar (aire acondicionado, electricista, fontanero, pintor...)
+recibe un WhatsApp, manda un enlace, el cliente rellena un formulario guiado por desplegables (sin
+registrarse), y el trabajo aparece organizado en el panel del profesional, con precio, costes y
+margen.
 
 ## Qué incluye este MVP
 
-- Registro/login de profesionales (Supabase Auth) → `USER → BUSINESS → DATA`.
-- Página pública `/c/[slug]` sin registro: nombre + teléfono → elige tipo de trabajo (instalación /
-  reparación / mantenimiento) → formulario de desplegables adaptado a ese tipo → fotos → se crea
-  la solicitud automáticamente, con un resumen generado a partir de las respuestas.
+- Registro/login de profesionales (Supabase Auth) → `USER → BUSINESS → DATA`. Cada negocio declara
+  su oficio (`businesses.trade`), y eso determina qué preguntas ve el cliente.
+- Página pública `/c/[slug]` sin registro: nombre + teléfono → elige tipo de trabajo (las opciones
+  cambian según el oficio del profesional) → formulario de desplegables adaptado a ese tipo →
+  fotos → se crea la solicitud automáticamente, con un resumen generado a partir de las respuestas.
 - Dashboard móvil: inicio (estadísticas + resumen económico del mes), trabajos, clientes, perfil.
 - Detalle de trabajo: cliente, ubicación (enlace a Google Maps), información recopilada, fotos,
   resumen, economía (precio/costes/beneficio/margen) y cambio de estado.
@@ -51,6 +53,7 @@ npm install
    - `0007_validate_phone.sql` (exige formato de teléfono español real, no vale un número inventado)
    - `0008_only_completed_jobs_visible.sql` (el profesional solo ve solicitudes que el cliente completó y envió, no las abandonadas a medias)
    - `0009_backfill_submitted_at.sql` (recupera solicitudes que ya se habían completado antes de existir la columna `submitted_at`)
+   - `0010_business_trade.sql` (cada negocio declara su oficio: aire acondicionado, electricista, fontanero o pintor)
 3. Ve a Project Settings → API Keys y copia el **Project URL** y la clave **anon / public**
    (o la **Publishable key**, si tu proyecto usa el nuevo formato de claves).
 4. Copia `.env.local.example` a `.env.local` y rellena:

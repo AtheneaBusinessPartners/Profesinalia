@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { FIELDS_BY_TYPE, JOB_TYPE_OPTIONS, buildSummary, type JobType } from "@/lib/job-fields";
+import { FIELDS_BY_TRADE, JOB_TYPES_BY_TRADE, buildSummary, type Trade } from "@/lib/job-fields";
 import { isValidSpanishPhone } from "@/lib/phone";
 
 interface Props {
@@ -10,7 +10,15 @@ interface Props {
   businessName: string;
   businessDescription: string;
   businessZone: string;
+  trade: Trade;
 }
+
+const TRADE_ICONS: Record<Trade, string> = {
+  aire_acondicionado: "❄️",
+  electricista: "⚡",
+  fontanero: "🔧",
+  pintor: "🎨",
+};
 
 interface SessionInfo {
   jobId: string;
@@ -23,7 +31,7 @@ function storageKey(slug: string) {
   return `profesionalia_job_${slug}`;
 }
 
-export default function JobRequestForm({ slug, businessName, businessDescription, businessZone }: Props) {
+export default function JobRequestForm({ slug, businessName, businessDescription, businessZone, trade }: Props) {
   const supabase = createClient();
 
   const [restoring, setRestoring] = useState(true);
@@ -35,7 +43,7 @@ export default function JobRequestForm({ slug, businessName, businessDescription
   const [startLoading, setStartLoading] = useState(false);
   const [startError, setStartError] = useState<string | null>(null);
 
-  const [type, setType] = useState<JobType | null>(null);
+  const [type, setType] = useState<string | null>(null);
   const [city, setCity] = useState("");
   const [address, setAddress] = useState("");
   const [description, setDescription] = useState("");
@@ -94,7 +102,7 @@ export default function JobRequestForm({ slug, businessName, businessDescription
     setStartLoading(false);
   }
 
-  function handlePickType(t: JobType) {
+  function handlePickType(t: string) {
     setType(t);
     setFields({});
     setStep("details");
@@ -137,7 +145,7 @@ export default function JobRequestForm({ slug, businessName, businessDescription
     setSubmitError(null);
     setSubmitting(true);
 
-    const summary = buildSummary(type, city.trim(), fields);
+    const summary = buildSummary(trade, type, city.trim(), fields);
 
     const { error } = await supabase.rpc("submit_job_data", {
       p_job_id: session.jobId,
@@ -169,7 +177,7 @@ export default function JobRequestForm({ slug, businessName, businessDescription
       <div className="flex flex-1 flex-col px-6 py-8">
         <div className="mb-8 text-center">
           <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-600 text-xl text-white">
-            ❄️
+            {TRADE_ICONS[trade]}
           </div>
           <h1 className="text-xl font-bold">{businessName}</h1>
           <p className="mt-1 text-neutral-600">{businessDescription}</p>
@@ -210,7 +218,7 @@ export default function JobRequestForm({ slug, businessName, businessDescription
         <p className="mb-6 text-center text-sm text-neutral-500">Elige la opción que más se ajuste</p>
 
         <div className="flex flex-col gap-3">
-          {JOB_TYPE_OPTIONS.map((opt) => (
+          {JOB_TYPES_BY_TRADE[trade].map((opt) => (
             <button
               key={opt.value}
               onClick={() => handlePickType(opt.value)}
@@ -226,7 +234,7 @@ export default function JobRequestForm({ slug, businessName, businessDescription
   }
 
   if (step === "details" && type) {
-    const fieldDefs = FIELDS_BY_TYPE[type];
+    const fieldDefs = FIELDS_BY_TRADE[trade][type] ?? [];
 
     return (
       <div className="flex flex-1 flex-col px-6 py-8">

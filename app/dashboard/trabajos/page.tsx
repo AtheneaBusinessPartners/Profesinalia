@@ -67,6 +67,7 @@ export default async function TrabajosPage({
             key={job.id}
             job={job}
             customerName={job.customers?.name ?? "Cliente"}
+            trade={business.trade}
             photoCount={job.job_photos?.length ?? 0}
           />
         ))}

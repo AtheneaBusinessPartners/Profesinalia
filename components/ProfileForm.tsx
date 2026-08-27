@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { TRADE_LABELS, type Trade } from "@/lib/job-fields";
 import type { Business } from "@/lib/types";
 
 export default function ProfileForm({ business }: { business: Business }) {
@@ -10,6 +11,7 @@ export default function ProfileForm({ business }: { business: Business }) {
   const router = useRouter();
 
   const [name, setName] = useState(business.name);
+  const [trade, setTrade] = useState<Trade>(business.trade);
   const [description, setDescription] = useState(business.description);
   const [phone, setPhone] = useState(business.phone);
   const [zone, setZone] = useState(business.zone);
@@ -19,7 +21,7 @@ export default function ProfileForm({ business }: { business: Business }) {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
-    await supabase.from("businesses").update({ name, description, phone, zone }).eq("id", business.id);
+    await supabase.from("businesses").update({ name, trade, description, phone, zone }).eq("id", business.id);
     setSaving(false);
     setSaved(true);
     router.refresh();
@@ -31,6 +33,19 @@ export default function ProfileForm({ business }: { business: Business }) {
       <div>
         <label className="label">Nombre del negocio</label>
         <input className="input" value={name} onChange={(e) => setName(e.target.value)} required />
+      </div>
+      <div>
+        <label className="label">Oficio</label>
+        <select className="input" value={trade} onChange={(e) => setTrade(e.target.value as Trade)}>
+          {Object.entries(TRADE_LABELS).map(([value, label]) => (
+            <option key={value} value={value}>
+              {label}
+            </option>
+          ))}
+        </select>
+        <p className="mt-1 text-xs text-neutral-400">
+          Cambia las preguntas que verán los nuevos clientes en tu enlace público.
+        </p>
       </div>
       <div>
         <label className="label">Descripción</label>

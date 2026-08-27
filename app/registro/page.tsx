@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
+import { TRADE_LABELS, TRADE_DEFAULT_DESCRIPTIONS, type Trade } from "@/lib/job-fields";
 
 function slugify(text: string): string {
   return text
@@ -25,6 +26,7 @@ export default function RegistroPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [businessName, setBusinessName] = useState("");
+  const [trade, setTrade] = useState<Trade>("aire_acondicionado");
   const [phone, setPhone] = useState("");
   const [zone, setZone] = useState("");
   const [loading, setLoading] = useState(false);
@@ -68,6 +70,8 @@ export default function RegistroPage() {
           phone,
           zone,
           email,
+          trade,
+          description: TRADE_DEFAULT_DESCRIPTIONS[trade],
         });
 
         if (!insertError) {
@@ -149,6 +153,17 @@ export default function RegistroPage() {
         </div>
 
         <hr className="my-2 border-neutral-200" />
+
+        <div>
+          <label className="label">¿Cuál es tu oficio?</label>
+          <select className="input" value={trade} onChange={(e) => setTrade(e.target.value as Trade)}>
+            {Object.entries(TRADE_LABELS).map(([value, label]) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
+          </select>
+        </div>
 
         <div>
           <label className="label">Nombre del negocio</label>
