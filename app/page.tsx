@@ -17,7 +17,7 @@ export default function HomePage() {
       <div className="card flex flex-col gap-3 text-sm text-neutral-600">
         <p>1. El cliente te escribe por WhatsApp pidiendo presupuesto.</p>
         <p>2. Le mandas tu enlace: climaassist.com/c/tu-negocio</p>
-        <p>3. La IA le hace las preguntas necesarias y recoge fotos.</p>
+        <p>3. Rellena un formulario guiado con lo que necesita y sube fotos.</p>
         <p>4. Tú abres tu panel y ves el trabajo completo, listo para valorar.</p>
       </div>
 
