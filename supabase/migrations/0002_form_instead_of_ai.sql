@@ -69,8 +69,8 @@ begin
     raise exception 'business_not_found';
   end if;
 
-  select id into v_customer_id from public.customers
-    where business_id = v_business.id and phone = p_customer_phone;
+  select id into v_customer_id from public.customers c
+    where c.business_id = v_business.id and c.phone = p_customer_phone;
 
   if v_customer_id is null then
     insert into public.customers (business_id, name, phone)
