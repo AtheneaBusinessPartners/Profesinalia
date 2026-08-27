@@ -47,6 +47,7 @@ npm install
    - `0003_fix_ambiguous_business_id.sql` (corrección de un bug de la función `start_job_request`)
    - `0004_business_approval.sql` (añade aprobación manual de negocios por el superadmin)
    - `0005_restrict_business_read.sql` (cierra una fuga real: la lectura pública de `businesses` exponía teléfono/email de todos los negocios)
+   - `0006_abuse_limits.sql` (límite de tamaño/tipo en las fotos, y freno de volumen anómalo al crear solicitudes)
 3. Ve a Project Settings → API Keys y copia el **Project URL** y la clave **anon / public**
    (o la **Publishable key**, si tu proyecto usa el nuevo formato de claves).
 4. Copia `.env.local.example` a `.env.local` y rellena:

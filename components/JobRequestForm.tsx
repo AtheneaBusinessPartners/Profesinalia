@@ -43,6 +43,7 @@ export default function JobRequestForm({ slug, businessName, businessDescription
   const [uploading, setUploading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [photoError, setPhotoError] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -96,6 +97,7 @@ export default function JobRequestForm({ slug, businessName, businessDescription
     const file = e.target.files?.[0];
     if (!file || !session) return;
     setUploading(true);
+    setPhotoError(null);
 
     try {
       const path = `${session.jobId}/${session.token}/${Date.now()}-${file.name}`;
@@ -111,7 +113,7 @@ export default function JobRequestForm({ slug, businessName, businessDescription
 
       setPhotos((prev) => [...prev, publicUrl.publicUrl]);
     } catch {
-      // Fallo puntual de subida: el cliente puede reintentar, no bloqueamos el resto del formulario.
+      setPhotoError("No se ha podido subir la foto. Comprueba que pese menos de 10 MB y sea una imagen (JPG, PNG, WEBP o HEIC).");
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
@@ -293,6 +295,7 @@ export default function JobRequestForm({ slug, businessName, businessDescription
             >
               {uploading ? "Subiendo..." : "📷 Añadir fotografía"}
             </button>
+            {photoError && <p className="mt-2 text-sm text-red-600">{photoError}</p>}
             {photos.length > 0 && (
               <div className="mt-3 flex flex-wrap gap-2">
                 {photos.map((url) => (
