@@ -13,7 +13,8 @@ export default async function DashboardHomePage() {
   const { data: allJobs } = await supabase
     .from("jobs")
     .select("id, status")
-    .eq("business_id", business.id);
+    .eq("business_id", business.id)
+    .not("submitted_at", "is", null);
 
   const nuevas = allJobs?.filter((j) => j.status === "nueva").length ?? 0;
   const enCurso = allJobs?.filter((j) => ["aceptada", "en_curso", "presupuesto_enviado", "en_revision"].includes(j.status)).length ?? 0;
@@ -42,6 +43,7 @@ export default async function DashboardHomePage() {
     .from("jobs")
     .select("*, customers(name), job_photos(id)")
     .eq("business_id", business.id)
+    .not("submitted_at", "is", null)
     .order("created_at", { ascending: false })
     .limit(5);
 

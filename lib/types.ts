@@ -53,6 +53,7 @@ export interface Job {
   longitude: number | null;
   description: string | null;
   summary: string | null;
+  submitted_at: string | null;
   created_at: string;
   updated_at: string;
 }

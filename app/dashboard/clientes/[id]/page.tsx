@@ -24,6 +24,7 @@ export default async function ClienteDetailPage({ params }: { params: { id: stri
     .from("jobs")
     .select("*, job_photos(id)")
     .eq("customer_id", typedCustomer.id)
+    .not("submitted_at", "is", null)
     .order("created_at", { ascending: false });
 
   const jobs = (jobsRaw ?? []) as (Job & { job_photos: { id: string }[] })[];
@@ -31,7 +32,8 @@ export default async function ClienteDetailPage({ params }: { params: { id: stri
   const { data: financials } = await supabase
     .from("job_financials")
     .select("sale_price, total_cost, profit, jobs!inner(customer_id)")
-    .eq("jobs.customer_id", typedCustomer.id);
+    .eq("jobs.customer_id", typedCustomer.id)
+    .not("jobs.submitted_at", "is", null);
 
   const facturacionHistorica = financials?.reduce((sum, f) => sum + Number(f.sale_price), 0) ?? 0;
   const beneficioHistorico = financials?.reduce((sum, f) => sum + Number(f.profit), 0) ?? 0;

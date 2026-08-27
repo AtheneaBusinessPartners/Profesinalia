@@ -10,8 +10,9 @@ export default async function ClientesPage() {
 
   const { data: customersRaw } = await supabase
     .from("customers")
-    .select("*, jobs(id, created_at)")
+    .select("*, jobs!inner(id, created_at)")
     .eq("business_id", business.id)
+    .not("jobs.submitted_at", "is", null)
     .order("created_at", { ascending: false });
 
   const customers = (customersRaw ?? []) as (Customer & { jobs: { id: string; created_at: string }[] })[];

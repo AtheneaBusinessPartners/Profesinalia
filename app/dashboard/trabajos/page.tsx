@@ -11,6 +11,7 @@ export default async function TrabajosPage() {
     .from("jobs")
     .select("*, customers(name), job_photos(id)")
     .eq("business_id", business.id)
+    .not("submitted_at", "is", null)
     .order("created_at", { ascending: false });
 
   const jobs = (jobsRaw ?? []) as (Job & { customers: { name: string } | null; job_photos: { id: string }[] })[];

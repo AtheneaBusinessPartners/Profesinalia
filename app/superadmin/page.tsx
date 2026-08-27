@@ -8,19 +8,22 @@ export default async function SuperadminPage() {
 
   const { data: businessesRaw } = await supabase
     .from("businesses")
-    .select("*, jobs(id, status)")
+    .select("*, jobs(id, status, submitted_at)")
     .order("created_at", { ascending: false });
 
   const businesses = (businessesRaw ?? []) as (import("@/lib/types").Business & {
-    jobs: { id: string; status: string }[];
+    jobs: { id: string; status: string; submitted_at: string | null }[];
   })[];
 
   const { data: financials } = await supabase.from("job_financials").select("sale_price, profit");
 
   const totalProfesionales = businesses.length;
-  const totalSolicitudes = businesses.reduce((sum, b) => sum + b.jobs.length, 0);
+  const totalSolicitudes = businesses.reduce(
+    (sum, b) => sum + b.jobs.filter((j) => j.submitted_at).length,
+    0
+  );
   const totalCompletados = businesses.reduce(
-    (sum, b) => sum + b.jobs.filter((j) => j.status === "completada").length,
+    (sum, b) => sum + b.jobs.filter((j) => j.submitted_at && j.status === "completada").length,
     0
   );
   const facturacionTotal = financials?.reduce((sum, f) => sum + Number(f.sale_price), 0) ?? 0;
@@ -77,7 +80,7 @@ export default async function SuperadminPage() {
                 <td className="px-4 py-2">{b.phone}</td>
                 <td className="px-4 py-2">{b.email}</td>
                 <td className="px-4 py-2">{formatDateTime(b.created_at)}</td>
-                <td className="px-4 py-2">{b.jobs.length}</td>
+                <td className="px-4 py-2">{b.jobs.filter((j) => j.submitted_at).length}</td>
                 <td className="px-4 py-2">
                   <span
                     className={`rounded-full px-2 py-0.5 text-xs font-medium ${

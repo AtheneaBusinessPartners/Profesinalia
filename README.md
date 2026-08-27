@@ -49,6 +49,7 @@ npm install
    - `0005_restrict_business_read.sql` (cierra una fuga real: la lectura pública de `businesses` exponía teléfono/email de todos los negocios)
    - `0006_abuse_limits.sql` (límite de tamaño/tipo en las fotos, y freno de volumen anómalo al crear solicitudes)
    - `0007_validate_phone.sql` (exige formato de teléfono español real, no vale un número inventado)
+   - `0008_only_completed_jobs_visible.sql` (el profesional solo ve solicitudes que el cliente completó y envió, no las abandonadas a medias)
 3. Ve a Project Settings → API Keys y copia el **Project URL** y la clave **anon / public**
    (o la **Publishable key**, si tu proyecto usa el nuevo formato de claves).
 4. Copia `.env.local.example` a `.env.local` y rellena:
