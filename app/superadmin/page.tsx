@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { formatCurrency, formatDateTime } from "@/lib/format";
 import SignOutButton from "@/components/SignOutButton";
+import ApproveBusinessButton from "@/components/ApproveBusinessButton";
 
 export default async function SuperadminPage() {
   const supabase = createClient();
@@ -65,6 +66,8 @@ export default async function SuperadminPage() {
               <th className="px-4 py-2">Email</th>
               <th className="px-4 py-2">Registro</th>
               <th className="px-4 py-2">Trabajos</th>
+              <th className="px-4 py-2">Estado</th>
+              <th className="px-4 py-2"></th>
             </tr>
           </thead>
           <tbody>
@@ -75,6 +78,18 @@ export default async function SuperadminPage() {
                 <td className="px-4 py-2">{b.email}</td>
                 <td className="px-4 py-2">{formatDateTime(b.created_at)}</td>
                 <td className="px-4 py-2">{b.jobs.length}</td>
+                <td className="px-4 py-2">
+                  <span
+                    className={`rounded-full px-2 py-0.5 text-xs font-medium ${
+                      b.approved ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"
+                    }`}
+                  >
+                    {b.approved ? "Aprobado" : "Pendiente"}
+                  </span>
+                </td>
+                <td className="px-4 py-2">
+                  <ApproveBusinessButton businessId={b.id} approved={b.approved} />
+                </td>
               </tr>
             ))}
           </tbody>

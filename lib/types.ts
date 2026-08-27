@@ -28,6 +28,7 @@ export interface Business {
   phone: string;
   email: string;
   zone: string;
+  approved: boolean;
   created_at: string;
 }
 

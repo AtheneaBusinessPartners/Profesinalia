@@ -41,9 +41,11 @@ npm install
 ### 2. Crear el proyecto en Supabase
 
 1. Crea un proyecto en [supabase.com](https://supabase.com).
-2. En el SQL Editor, ejecuta **en este orden** los dos archivos de `supabase/migrations/`:
+2. En el SQL Editor, ejecuta **en este orden** los archivos de `supabase/migrations/`:
    - `0001_init.sql` (esquema base)
    - `0002_form_instead_of_ai.sql` (sustituye el chat de IA por el formulario de desplegables)
+   - `0003_fix_ambiguous_business_id.sql` (corrección de un bug de la función `start_job_request`)
+   - `0004_business_approval.sql` (añade aprobación manual de negocios por el superadmin)
 3. Ve a Project Settings → API Keys y copia el **Project URL** y la clave **anon / public**
    (o la **Publishable key**, si tu proyecto usa el nuevo formato de claves).
 4. Copia `.env.local.example` a `.env.local` y rellena:
@@ -69,6 +71,14 @@ npm run dev
 
 En Supabase → Table Editor → `profiles`, busca tu usuario y cambia `role` a `admin`. Después
 podrás entrar en `/superadmin`.
+
+### 5b. Aprobar negocios
+
+Cualquiera puede registrarse, pero un negocio recién creado queda **pendiente de aprobación**
+(`businesses.approved = false`): su enlace público no funciona y su dashboard muestra un aviso de
+espera. Desde `/superadmin` puedes aprobar (o revocar) cada negocio con un botón. Solo el
+superadmin puede cambiar este campo — un intento de un profesional de auto-aprobarse se revierte
+automáticamente (trigger `businesses_protect_approval`).
 
 ### 6. Subir a GitHub y desplegar en Vercel
 
