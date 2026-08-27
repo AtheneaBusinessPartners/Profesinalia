@@ -19,8 +19,6 @@ export const JOB_STATUSES: JobStatus[] = [
   "cancelada",
 ];
 
-export type MessageSender = "customer" | "ai";
-
 export interface Business {
   id: string;
   owner_id: string;
@@ -41,27 +39,10 @@ export interface Customer {
   created_at: string;
 }
 
-export interface Conversation {
-  id: string;
-  business_id: string;
-  customer_id: string;
-  completed_at: string | null;
-  created_at: string;
-}
-
-export interface Message {
-  id: string;
-  conversation_id: string;
-  sender: MessageSender;
-  content: string;
-  created_at: string;
-}
-
 export interface Job {
   id: string;
   business_id: string;
   customer_id: string;
-  conversation_id: string;
   type: string | null;
   status: JobStatus;
   address: string | null;
@@ -70,7 +51,7 @@ export interface Job {
   latitude: number | null;
   longitude: number | null;
   description: string | null;
-  ai_summary: string | null;
+  summary: string | null;
   created_at: string;
   updated_at: string;
 }

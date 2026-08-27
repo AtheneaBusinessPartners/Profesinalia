@@ -2,12 +2,11 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getCurrentBusinessOrRedirect } from "@/lib/get-business";
 import { createClient } from "@/lib/supabase/server";
-import { formatDateTime } from "@/lib/format";
 import { labelForKey } from "@/lib/job-data-labels";
 import { jobTypeLabel } from "@/components/JobListItem";
 import StatusSelector from "@/components/StatusSelector";
 import FinancialsForm from "@/components/FinancialsForm";
-import type { Customer, Job, JobData, JobFinancials, JobPhoto, Message } from "@/lib/types";
+import type { Customer, Job, JobData, JobFinancials, JobPhoto } from "@/lib/types";
 
 export default async function JobDetailPage({ params }: { params: { id: string } }) {
   const business = await getCurrentBusinessOrRedirect();
@@ -24,19 +23,16 @@ export default async function JobDetailPage({ params }: { params: { id: string }
 
   const typedJob = job as Job;
 
-  const [{ data: customer }, { data: jobData }, { data: photos }, { data: messages }, { data: financials }] =
-    await Promise.all([
-      supabase.from("customers").select("*").eq("id", typedJob.customer_id).single(),
-      supabase.from("job_data").select("*").eq("job_id", typedJob.id).single(),
-      supabase.from("job_photos").select("*").eq("job_id", typedJob.id).order("created_at"),
-      supabase.from("messages").select("*").eq("conversation_id", typedJob.conversation_id).order("created_at"),
-      supabase.from("job_financials").select("*").eq("job_id", typedJob.id).single(),
-    ]);
+  const [{ data: customer }, { data: jobData }, { data: photos }, { data: financials }] = await Promise.all([
+    supabase.from("customers").select("*").eq("id", typedJob.customer_id).single(),
+    supabase.from("job_data").select("*").eq("job_id", typedJob.id).single(),
+    supabase.from("job_photos").select("*").eq("job_id", typedJob.id).order("created_at"),
+    supabase.from("job_financials").select("*").eq("job_id", typedJob.id).single(),
+  ]);
 
   const typedCustomer = customer as Customer | null;
   const typedJobData = (jobData as JobData | null)?.data ?? {};
   const typedPhotos = (photos ?? []) as JobPhoto[];
-  const typedMessages = (messages ?? []) as Message[];
   const typedFinancials = financials as JobFinancials | null;
 
   const mapsQuery = [typedJob.address, typedJob.city, typedJob.postal_code].filter(Boolean).join(", ");
@@ -88,10 +84,11 @@ export default async function JobDetailPage({ params }: { params: { id: string }
         </section>
       )}
 
-      {typedJob.ai_summary && (
+      {typedJob.summary && (
         <section className="card mt-4">
-          <p className="text-sm font-semibold text-neutral-500">Resumen IA</p>
-          <p className="mt-1 text-neutral-800">{typedJob.ai_summary}</p>
+          <p className="text-sm font-semibold text-neutral-500">Resumen</p>
+          <p className="mt-1 text-neutral-800">{typedJob.summary}</p>
+          {typedJob.description && <p className="mt-2 text-sm text-neutral-600">"{typedJob.description}"</p>}
         </section>
       )}
 
@@ -127,28 +124,6 @@ export default async function JobDetailPage({ params }: { params: { id: string }
         <p className="mb-3 text-sm font-semibold text-neutral-500">Economía</p>
         <FinancialsForm jobId={typedJob.id} initial={typedFinancials} />
       </section>
-
-      {typedMessages.length > 0 && (
-        <section className="card mt-4">
-          <p className="mb-3 text-sm font-semibold text-neutral-500">Conversación</p>
-          <div className="flex flex-col gap-2">
-            {typedMessages.map((m) => (
-              <div key={m.id} className={`flex ${m.sender === "customer" ? "justify-end" : "justify-start"}`}>
-                <div
-                  className={`max-w-[85%] whitespace-pre-wrap rounded-xl px-3 py-2 text-sm ${
-                    m.sender === "customer" ? "bg-brand-600 text-white" : "bg-neutral-100"
-                  }`}
-                >
-                  {m.content}
-                  <p className={`mt-1 text-[10px] ${m.sender === "customer" ? "text-brand-100" : "text-neutral-400"}`}>
-                    {formatDateTime(m.created_at)}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
     </div>
   );
 }
