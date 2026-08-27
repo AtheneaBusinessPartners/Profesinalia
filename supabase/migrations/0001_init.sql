@@ -1,4 +1,4 @@
--- ClimaAssist — esquema inicial (MVP)
+-- Profesionalia — esquema inicial (MVP)
 -- USER -> BUSINESS -> DATA
 
 create extension if not exists "pgcrypto";

@@ -19,7 +19,7 @@ interface SessionInfo {
 type Step = "contact" | "type" | "details" | "done";
 
 function storageKey(slug: string) {
-  return `climaassist_job_${slug}`;
+  return `profesionalia_job_${slug}`;
 }
 
 export default function JobRequestForm({ slug, businessName, businessDescription, businessZone }: Props) {

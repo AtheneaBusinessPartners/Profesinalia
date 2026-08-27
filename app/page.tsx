@@ -7,7 +7,7 @@ export default function HomePage() {
         <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-600 text-2xl text-white">
           ❄️
         </div>
-        <h1 className="text-2xl font-bold text-neutral-900">ClimaAssist</h1>
+        <h1 className="text-2xl font-bold text-neutral-900">Profesionalia</h1>
         <p className="mt-2 text-neutral-600">
           Recibes un WhatsApp. Mandas un enlace. El cliente cuenta lo que necesita. Tú lo recibes
           organizado en tu panel, listo para presupuestar.
@@ -16,7 +16,7 @@ export default function HomePage() {
 
       <div className="card flex flex-col gap-3 text-sm text-neutral-600">
         <p>1. El cliente te escribe por WhatsApp pidiendo presupuesto.</p>
-        <p>2. Le mandas tu enlace: climaassist.com/c/tu-negocio</p>
+        <p>2. Le mandas tu enlace: profesionalia.com/c/tu-negocio</p>
         <p>3. Rellena un formulario guiado con lo que necesita y sube fotos.</p>
         <p>4. Tú abres tu panel y ves el trabajo completo, listo para valorar.</p>
       </div>

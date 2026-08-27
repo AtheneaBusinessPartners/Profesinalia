@@ -1,4 +1,4 @@
-# ClimaAssist (MVP)
+# Profesionalia (MVP)
 
 Un profesional de aire acondicionado recibe un WhatsApp, manda un enlace, el cliente rellena un
 formulario guiado por desplegables (sin registrarse), y el trabajo aparece organizado en el panel

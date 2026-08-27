@@ -178,7 +178,7 @@ export default function RegistroPage() {
 
         {businessName && (
           <p className="text-sm text-neutral-500">
-            Tu enlace será: <span className="font-mono">climaassist.com/c/{slugify(businessName)}</span>
+            Tu enlace será: <span className="font-mono">profesionalia.com/c/{slugify(businessName)}</span>
           </p>
         )}
 

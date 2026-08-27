@@ -1,4 +1,4 @@
--- ClimaAssist — sustituye el chat de IA por un formulario de desplegables.
+-- Profesionalia — sustituye el chat de IA por un formulario de desplegables.
 -- Aplica esto DESPUÉS de 0001_init.sql, sobre una base de datos que ya lo tenga.
 
 -- 1) Storage: quitamos la policy de insert que dependía de is_valid_conversation_token

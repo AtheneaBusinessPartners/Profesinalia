@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "ClimaAssist",
+  title: "Profesionalia",
   description:
-    "El asistente que convierte un WhatsApp en un trabajo organizado: tu cliente cuenta lo que necesita, tú lo recibes listo para presupuestar.",
+    "Convierte un WhatsApp en un trabajo organizado: tu cliente rellena un formulario guiado, tú lo recibes listo para presupuestar.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
