@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { FIELDS_BY_TYPE, JOB_TYPE_OPTIONS, buildSummary, type JobType } from "@/lib/job-fields";
+import { isValidSpanishPhone } from "@/lib/phone";
 
 interface Props {
   slug: string;
@@ -61,6 +62,12 @@ export default function JobRequestForm({ slug, businessName, businessDescription
   async function handleStart(e: React.FormEvent) {
     e.preventDefault();
     setStartError(null);
+
+    if (!isValidSpanishPhone(phone)) {
+      setStartError("Ese teléfono no parece válido. Introduce un móvil o fijo español (9 dígitos).");
+      return;
+    }
+
     setStartLoading(true);
 
     const { data, error } = await supabase.rpc("start_job_request", {
@@ -70,7 +77,11 @@ export default function JobRequestForm({ slug, businessName, businessDescription
     });
 
     if (error || !data || data.length === 0) {
-      setStartError("No se ha podido iniciar la solicitud. Inténtalo de nuevo.");
+      setStartError(
+        error?.message.includes("invalid_phone")
+          ? "Ese teléfono no parece válido. Introduce un móvil o fijo español (9 dígitos)."
+          : "No se ha podido iniciar la solicitud. Inténtalo de nuevo."
+      );
       setStartLoading(false);
       return;
     }
@@ -177,6 +188,7 @@ export default function JobRequestForm({ slug, businessName, businessDescription
             <input
               className="input"
               type="tel"
+              placeholder="6XX XXX XXX"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               required
