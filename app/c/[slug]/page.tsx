@@ -5,11 +5,8 @@ import JobRequestForm from "@/components/JobRequestForm";
 export default async function PublicClientPage({ params }: { params: { slug: string } }) {
   const supabase = createClient();
 
-  const { data: business } = await supabase
-    .from("businesses")
-    .select("id, name, description, zone, approved")
-    .eq("slug", params.slug)
-    .single();
+  const { data: rows } = await supabase.rpc("get_public_business", { p_slug: params.slug });
+  const business = rows?.[0];
 
   if (!business) {
     notFound();
