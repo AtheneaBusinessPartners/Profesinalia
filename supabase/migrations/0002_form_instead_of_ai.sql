@@ -135,7 +135,10 @@ $$;
 grant execute on function public.submit_job_data(uuid, uuid, text, text, text, text, text, jsonb, text) to anon, authenticated;
 
 -- 9) register_job_photo: misma firma que antes, ahora el primer parámetro es el job_id
-create or replace function public.register_job_photo(
+-- (hay que borrarla antes: Postgres no permite renombrar un parámetro con CREATE OR REPLACE)
+drop function if exists public.register_job_photo(uuid, uuid, text);
+
+create function public.register_job_photo(
   p_job_id uuid,
   p_token uuid,
   p_url text
