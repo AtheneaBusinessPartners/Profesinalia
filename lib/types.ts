@@ -1,25 +1,8 @@
 import type { Trade } from "./job-fields";
 
-export type JobStatus =
-  | "nueva"
-  | "en_revision"
-  | "presupuesto_enviado"
-  | "aceptada"
-  | "en_curso"
-  | "completada"
-  | "rechazada"
-  | "cancelada";
+export type JobStatus = "nueva" | "en_curso" | "completada" | "cancelada";
 
-export const JOB_STATUSES: JobStatus[] = [
-  "nueva",
-  "en_revision",
-  "presupuesto_enviado",
-  "aceptada",
-  "en_curso",
-  "completada",
-  "rechazada",
-  "cancelada",
-];
+export const JOB_STATUSES: JobStatus[] = ["nueva", "en_curso", "completada", "cancelada"];
 
 export interface Business {
   id: string;

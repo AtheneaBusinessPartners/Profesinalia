@@ -54,6 +54,7 @@ npm install
    - `0008_only_completed_jobs_visible.sql` (el profesional solo ve solicitudes que el cliente completó y envió, no las abandonadas a medias)
    - `0009_backfill_submitted_at.sql` (recupera solicitudes que ya se habían completado antes de existir la columna `submitted_at`)
    - `0010_business_trade.sql` (cada negocio declara su oficio: aire acondicionado, electricista, fontanero o pintor)
+   - `0011_simplify_statuses.sql` (reduce los estados de un trabajo de 8 a 4: nueva, en_curso, completada, cancelada)
 3. Ve a Project Settings → API Keys y copia el **Project URL** y la clave **anon / public**
    (o la **Publishable key**, si tu proyecto usa el nuevo formato de claves).
 4. Copia `.env.local.example` a `.env.local` y rellena:

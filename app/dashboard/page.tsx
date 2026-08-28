@@ -17,7 +17,7 @@ export default async function DashboardHomePage() {
     .not("submitted_at", "is", null);
 
   const nuevas = allJobs?.filter((j) => j.status === "nueva").length ?? 0;
-  const enCurso = allJobs?.filter((j) => ["aceptada", "en_curso", "presupuesto_enviado", "en_revision"].includes(j.status)).length ?? 0;
+  const enCurso = allJobs?.filter((j) => j.status === "en_curso").length ?? 0;
   const completadas = allJobs?.filter((j) => j.status === "completada").length ?? 0;
 
   const { data: financials } = await supabase
